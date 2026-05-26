@@ -1,0 +1,929 @@
+:Sitio Web VOX LIBRI:index.html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOX LIBRI - Servicios Editoriales / Editorial Services</title>
+    <!-- Tailwind CSS (V4) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Color personalizado principal */
+        .bg-voxblue { background-color: #231E58; }
+        .text-voxblue { color: #231E58; }
+        .border-voxblue { border-color: #231E58; }
+        .hover\:bg-voxblue-dark:hover { background-color: #1a1644; }
+        .focus\:ring-voxblue:focus { --tw-ring-color: #231E58; }
+        
+        /* Efecto de arañazo sutil de fondo en secciones */
+        .scratch-bg {
+            background-image: radial-gradient(#231e58 0.5px, transparent 0.5px), radial-gradient(#231e58 0.5px, #fbfbf9 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            opacity: 0.03;
+        }
+
+        /* Transiciones suaves para la SPA */
+        .tab-content {
+            transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-[#FBFBF9] text-stone-800 flex flex-col min-h-screen selection:bg-[#231E58] selection:text-white">
+
+    <!-- TOP ANNOUNCEMENT BAR (Idiomas) -->
+    <div class="bg-stone-100 border-b border-stone-200 text-xs py-2 px-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <span class="text-stone-500 font-medium tracking-wide" id="top-bar-text">Estudio Editorial Multilingüe · Español & English</span>
+            <div class="flex items-center gap-2">
+                <button onclick="changeLanguage('es')" id="lang-es" class="font-bold text-voxblue cursor-pointer hover:underline transition">ES</button>
+                <span class="text-stone-300">|</span>
+                <button onclick="changeLanguage('en')" id="lang-en" class="font-normal text-stone-500 cursor-pointer hover:underline transition">EN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVBAR PRINCIPAL -->
+    <header class="bg-voxblue text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <!-- Logo SVG recreando el gato rascando el libro -->
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="switchTab('home')">
+                <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-md transform transition group-hover:scale-105">
+                    <!-- SVG de gato con garras sobre libro -->
+                    <svg viewBox="0 0 100 100" class="w-10 h-10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Libro Abierto -->
+                        <path d="M15 80C30 80 40 75 50 70C60 75 70 80 85 80V35C70 35 60 30 50 25C40 30 30 35 15 35V80Z" fill="#231E58" />
+                        <path d="M50 25V70" stroke="white" stroke-width="2" />
+                        <!-- Páginas interiores sutiles -->
+                        <path d="M20 40C30 40 40 37 48 33" stroke="white" stroke-width="1" opacity="0.7"/>
+                        <path d="M20 50C30 50 40 47 48 43" stroke="white" stroke-width="1" opacity="0.7"/>
+                        <path d="M20 60C30 60 40 57 48 53" stroke="white" stroke-width="1" opacity="0.7"/>
+                        <path d="M80 40C70 40 60 37 52 33" stroke="white" stroke-width="1" opacity="0.7"/>
+                        <path d="M80 50C70 50 60 47 52 43" stroke="white" stroke-width="1" opacity="0.7"/>
+                        <path d="M80 60C70 60 60 57 52 53" stroke="white" stroke-width="1" opacity="0.7"/>
+                        
+                        <!-- El Gato Curioso (Línea blanca) -->
+                        <circle cx="50" cy="50" r="14" fill="#231E58" stroke="white" stroke-width="2" />
+                        <!-- Orejas -->
+                        <polygon points="38,40 44,48 36,49" fill="#231E58" stroke="white" stroke-width="1.5" />
+                        <polygon points="62,40 56,48 64,49" fill="#231E58" stroke="white" stroke-width="1.5" />
+                        <!-- Ojos grandes -->
+                        <circle cx="45" cy="50" r="3.5" fill="white" />
+                        <circle cx="45" cy="50" r="1.5" fill="#231E58" />
+                        <circle cx="55" cy="50" r="3.5" fill="white" />
+                        <circle cx="55" cy="50" r="1.5" fill="#231E58" />
+                        <!-- Nariz/Boca -->
+                        <path d="M48 54 Q50 56 52 54" stroke="white" stroke-width="1" fill="none"/>
+                        <!-- Patas y Garras (Arañazos superiores) -->
+                        <path d="M25 15C25 25 27 28 32 30" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M75 15C75 25 73 28 68 30" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        <!-- Marcas de garras (3 líneas verticales finas en las esquinas superiores) -->
+                        <line x1="22" y1="10" x2="22" y2="22" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="26" y1="8" x2="26" y2="24" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="30" y1="12" x2="30" y2="20" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        
+                        <line x1="78" y1="10" x2="78" y2="22" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="74" y1="8" x2="74" y2="24" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="70" y1="12" x2="70" y2="20" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div>
+                    <span class="font-serif text-2xl font-bold tracking-wider leading-none block">VOX LIBRI</span>
+                    <span class="text-[10px] text-stone-300 tracking-widest uppercase block" id="nav-subtitle">Servicios Editoriales</span>
+                </div>
+            </div>
+
+            <!-- Menú de Navegación -->
+            <nav class="flex flex-wrap justify-center gap-1 sm:gap-2">
+                <button onclick="switchTab('home')" id="btn-home" class="nav-btn px-4 py-2 rounded-md text-sm font-semibold tracking-wide transition-all bg-white/10 text-white cursor-pointer" data-key="nav-home">Inicio</button>
+                <button onclick="switchTab('servicios')" id="btn-servicios" class="nav-btn px-4 py-2 rounded-md text-sm font-semibold tracking-wide transition-all text-stone-200 hover:text-white hover:bg-white/5 cursor-pointer" data-key="nav-services">Servicios</button>
+                <button onclick="switchTab('portafolio')" id="btn-portafolio" class="nav-btn px-4 py-2 rounded-md text-sm font-semibold tracking-wide transition-all text-stone-200 hover:text-white hover:bg-white/5 cursor-pointer" data-key="nav-portfolio">Portafolio</button>
+                <button onclick="switchTab('calculadora')" id="btn-calculadora" class="nav-btn px-4 py-2 rounded-md text-sm font-semibold tracking-wide transition-all text-stone-200 hover:text-white hover:bg-white/5 cursor-pointer" data-key="nav-calc">Presupuestador</button>
+                <button onclick="switchTab('contacto')" id="btn-contacto" class="nav-btn px-4 py-2 rounded-md text-sm font-semibold tracking-wide transition-all text-stone-200 hover:text-white hover:bg-white/5 cursor-pointer" data-key="nav-contact">Contacto</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow relative">
+        <!-- Fondo Decorativo Sutil de Arañazo -->
+        <div class="absolute inset-0 scratch-bg pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto px-4 py-12 relative z-10">
+
+            <!-- ==================== PESTAÑA: INICIO ==================== -->
+            <section id="tab-home" class="tab-content space-y-16 animate-fade-in">
+                <!-- HERO SECTION -->
+                <div class="text-center space-y-6 max-w-3xl mx-auto py-8">
+                    <span class="text-xs uppercase tracking-widest text-voxblue font-bold bg-voxblue/5 px-4 py-1.5 rounded-full" id="hero-tag">Estudio Editorial de Alto Nivel</span>
+                    <h2 class="font-serif text-4xl sm:text-6xl font-bold text-voxblue leading-tight" id="hero-title">
+                        Cuidamos tus textos.<br>Potenciamos tu voz.
+                    </h2>
+                    <p class="text-lg sm:text-xl text-stone-600 font-light leading-relaxed" id="hero-desc">
+                        Somos un estudio boutique dedicado a la edición, corrección, traducción, maquetación y acompañamiento personalizado de textos tanto en español como en inglés.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4 pt-4">
+                        <button onclick="switchTab('contacto')" class="bg-voxblue hover:bg-voxblue-dark text-white px-8 py-3.5 rounded-lg shadow-lg hover:shadow-xl transition-all font-semibold text-sm tracking-wider cursor-pointer" data-key="btn-hero-contact">
+                            Cotizar Mi Manuscrito
+                        </button>
+                        <button onclick="switchTab('servicios')" class="border-2 border-voxblue text-voxblue hover:bg-voxblue/5 px-8 py-3.5 rounded-lg transition-all font-semibold text-sm tracking-wider cursor-pointer" data-key="btn-hero-more">
+                            Conocer Servicios
+                        </button>
+                    </div>
+                </div>
+
+                <!-- VALORES / DIFERENCIALES -->
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition-all space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-voxblue/5 flex items-center justify-center text-voxblue">
+                            <!-- SVG Pluma/Edición -->
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-voxblue" data-key="val1-title">Artesanía de la Palabra</h3>
+                        <p class="text-sm text-stone-600 leading-relaxed" data-key="val1-desc">
+                            No usamos correctores automáticos despersonalizados. Analizamos tu estilo, el ritmo literario y la cadencia de tu prosa para pulir el texto respetando tu identidad original.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition-all space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-voxblue/5 flex items-center justify-center text-voxblue">
+                            <!-- SVG Dispositivos/Epub -->
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-voxblue" data-key="val2-title">Precisión Técnica Digital</h3>
+                        <p class="text-sm text-stone-600 leading-relaxed" data-key="val2-desc">
+                            Somos especialistas en la ingeniería detrás del libro digital (EPUB accesibles, optimización para Bookwire) y maquetación fina para papel con rigor tipográfico estricto.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition-all space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-voxblue/5 flex items-center justify-center text-voxblue">
+                            <!-- SVG Globo / Traducción -->
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h2m4-3.5a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-voxblue" data-key="val3-title">Esencia Bilingüe</h3>
+                        <p class="text-sm text-stone-600 leading-relaxed" data-key="val3-desc">
+                            Traducimos y adaptamos textos entre español e inglés de forma nativa. No traducimos palabras; traducimos sentidos, giros culturales e intenciones artísticas o corporativas.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN DE SOCIOS / DESTACADO -->
+                <div class="bg-voxblue text-white rounded-3xl p-8 sm:p-12 shadow-xl flex flex-col md:flex-row items-center gap-8">
+                    <div class="space-y-4 md:w-2/3">
+                        <h3 class="font-serif text-2xl sm:text-3xl font-bold" data-key="banner-title">¿Tenés un borrador o un proyecto en mente?</h3>
+                        <p class="text-stone-300 text-sm sm:text-base leading-relaxed" data-key="banner-desc">
+                            No importa si es una novela de 80.000 palabras, un libro académico hipervínculado para indexar, o una agenda digital interactiva. En Vox Libri le damos la estructura y el brillo profesional necesario para que destaque en el mercado.
+                        </p>
+                    </div>
+                    <div class="md:w-1/3 w-full flex justify-center">
+                        <button onclick="switchTab('calculadora')" class="w-full sm:w-auto bg-white text-voxblue hover:bg-stone-100 px-6 py-4 rounded-xl font-bold tracking-wider text-sm transition-all shadow-md cursor-pointer" data-key="banner-btn">
+                            Calcular Presupuesto Inicial
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== PESTAÑA: SERVICIOS ==================== -->
+            <section id="tab-servicios" class="tab-content space-y-12 hidden">
+                <div class="text-center max-w-2xl mx-auto space-y-3">
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-voxblue" data-key="services-title">Nuestra Caja de Herramientas</h2>
+                    <p class="text-stone-500 text-sm" data-key="services-subtitle">Servicios modulares diseñados para acompañar el ciclo de vida de cualquier obra literaria, académica o corporativa.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Servicio 1 -->
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-100 hover:border-voxblue/20 transition-all flex gap-5">
+                        <div class="w-12 h-12 shrink-0 rounded-xl bg-voxblue/5 flex items-center justify-center text-voxblue font-bold font-serif text-xl">01</div>
+                        <div class="space-y-2">
+                            <h3 class="font-serif text-xl font-bold text-voxblue" data-key="srv1-title">Corrección de Estilo & Ortotipografía</h3>
+                            <p class="text-xs text-stone-500 leading-relaxed" data-key="srv1-desc">
+                                Revisión minuciosa de sintaxis, ortografía, puntuación, concordancia gramatical y coherencia textual. Eliminamos redundancias y vicios de lenguaje sin alterar tu voz ni tu estilo narrativo. Ideal para novelistas, investigadores y creadores de contenido técnico.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Servicio 2 -->
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-100 hover:border-voxblue/20 transition-all flex gap-5">
+                        <div class="w-12 h-12 shrink-0 rounded-xl bg-voxblue/5 flex items-center justify-center text-voxblue font-bold font-serif text-xl">02</div>
+                        <div class="space-y-2">
+                            <h3 class="font-serif text-xl font-bold text-voxblue" data-key="srv2-title">Maquetación & Diseño Editorial</h3>
+                            <p class="text-xs text-stone-500 leading-relaxed" data-key="srv2-desc">
+                                Creación de interiores armoniosos y legibles para tus libros físicos y digitales. Diseño de grillas tipográficas, control de huérfanas y viudas, e ingeniería de archivos digitales (EPUB) adaptados con metadatos finos para una distribución exitosa en plataformas como Amazon y Bookwire.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Servicio 3 -->
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-100 hover:border-voxblue/20 transition-all flex gap-5">
+                        <div class="w-12 h-12 shrink-0 rounded-xl bg-voxblue/5 flex items-center justify-center text-voxblue font-bold font-serif text-xl">03</div>
+                        <div class="space-y-2">
+                            <h3 class="font-serif text-xl font-bold text-voxblue" data-key="srv3-title">Traducción Literaria & Técnica</h3>
+                            <p class="text-xs text-stone-500 leading-relaxed" data-key="srv3-desc">
+                                Traducción experta bidireccional (Español ⇆ Inglés). Más allá del significado literal, adaptamos los matices idiomáticos, culturales e informales del texto original. Diseñado tanto para documentos académicos rigurosos como para proyectos artísticos sensibles.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Servicio 4 -->
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-100 hover:border-voxblue/20 transition-all flex gap-5">
+                        <div class="w-12 h-12 shrink-0 rounded-xl bg-voxblue/5 flex items-center justify-center text-voxblue font-bold font-serif text-xl">04</div>
+                        <div class="space-y-2">
+                            <h3 class="font-serif text-xl font-bold text-voxblue" data-key="srv4-title">Acompañamiento y Consultoría</h3>
+                            <p class="text-xs text-stone-500 leading-relaxed" data-key="srv4-desc">
+                                ¿No sabés por dónde empezar a publicar tu libro? Te brindamos asesoramiento integral en el proceso técnico: desde el formato idóneo del borrador, hasta la correcta asignación de metadatos, estructuración de capítulos y optimización para impresión bajo demanda.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== PESTAÑA: PORTAFOLIO ==================== -->
+            <section id="tab-portafolio" class="tab-content space-y-12 hidden">
+                <div class="text-center max-w-2xl mx-auto space-y-3">
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-voxblue" data-key="portfolio-title">Hitos del Estudio</h2>
+                    <p class="text-stone-500 text-sm" data-key="portfolio-subtitle">Un repaso por los proyectos en los que hemos participado, garantizando un estándar de calidad técnica insuperable.</p>
+                </div>
+
+                <!-- Lista de Casos / Galería estructurada -->
+                <div class="grid md:grid-cols-3 gap-8">
+                    
+                    <!-- Proyecto 1 -->
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-stone-100 hover:shadow-md transition-all flex flex-col">
+                        <!-- Portada Mockup SVG -->
+                        <div class="bg-voxblue/10 h-48 flex items-center justify-center p-6 relative">
+                            <div class="absolute inset-0 scratch-bg opacity-10"></div>
+                            <div class="w-24 h-32 bg-voxblue rounded shadow-lg flex flex-col justify-between p-3 text-white border-l-4 border-white/20">
+                                <span class="text-[6px] tracking-widest font-bold uppercase text-stone-300">CALEIDOSCOPIO</span>
+                                <div class="h-0.5 bg-white/40 w-8 my-1"></div>
+                                <span class="text-[8px] font-serif leading-none">Vol. 1<br>Nro. 12</span>
+                                <div class="text-[5px] text-stone-400 self-end mt-auto">VOX LIBRI</div>
+                            </div>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                            <div class="space-y-2">
+                                <span class="text-[10px] font-bold tracking-widest text-voxblue uppercase bg-voxblue/10 px-2.5 py-1 rounded-full inline-block" data-key="port1-tag">Corrección Editorial</span>
+                                <h3 class="font-serif text-lg font-bold text-voxblue leading-tight" data-key="port1-title">Revista Caleidoscopio (Vol. 1, N.º 12)</h3>
+                                <p class="text-xs text-stone-600 leading-relaxed" data-key="port1-desc">
+                                    Llevamos adelante la corrección de estilo y la revisión ortotipográfica integral de este volumen para garantizar un lenguaje depurado, coordinando la corrección con las normas de publicación académica exigidas.
+                                </p>
+                            </div>
+                            <div class="pt-4 border-t border-stone-100 flex items-center justify-between text-xs text-stone-500">
+                                <span data-key="port-format">Formato: Impreso & Digital</span>
+                                <span class="font-bold text-voxblue">LinkedIn Case</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Proyecto 2 -->
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-stone-100 hover:shadow-md transition-all flex flex-col">
+                        <!-- Portada Mockup SVG -->
+                        <div class="bg-voxblue/10 h-48 flex items-center justify-center p-6 relative">
+                            <div class="absolute inset-0 scratch-bg opacity-10"></div>
+                            <div class="w-28 h-32 bg-emerald-950 rounded shadow-lg flex flex-col justify-between p-3 text-white border-l-4 border-white/20">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[5px] tracking-widest text-emerald-300 font-bold">ACCESIBLE EPUB</span>
+                                    <span class="text-[6px] text-white">●</span>
+                                </div>
+                                <span class="text-[9px] font-serif font-bold leading-tight">Digital Book Metadata</span>
+                                <div class="text-[5px] text-emerald-400 mt-auto">Bookwire Optimized</div>
+                            </div>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                            <div class="space-y-2">
+                                <span class="text-[10px] font-bold tracking-widest text-emerald-700 uppercase bg-emerald-100/60 px-2.5 py-1 rounded-full inline-block" data-key="port2-tag">Ingeniería del EPUB</span>
+                                <h3 class="font-serif text-lg font-bold text-voxblue leading-tight" data-key="port2-title">Exportación y Metadatos Bookwire</h3>
+                                <p class="text-xs text-stone-600 leading-relaxed" data-key="port2-desc">
+                                    Configuración avanzada de parámetros técnicos en Adobe InDesign para exportar archivos EPUB con máxima compatibilidad. Ajuste de metadatos de accesibilidad y superación de validaciones críticas en la pasarela de Bookwire.
+                                </p>
+                            </div>
+                            <div class="pt-4 border-t border-stone-100 flex items-center justify-between text-xs text-stone-500">
+                                <span data-key="port-format-2">Formato: Reflowable EPUB 3</span>
+                                <span class="font-bold text-voxblue">InDesign Tech</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Proyecto 3 -->
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-stone-100 hover:shadow-md transition-all flex flex-col">
+                        <!-- Portada Mockup SVG -->
+                        <div class="bg-voxblue/10 h-48 flex items-center justify-center p-6 relative">
+                            <div class="absolute inset-0 scratch-bg opacity-10"></div>
+                            <div class="w-24 h-32 bg-amber-900 rounded shadow-lg flex flex-col justify-between p-3 text-white border-l-4 border-white/20">
+                                <span class="text-[5px] tracking-widest font-bold text-amber-200">INTERACTIVE PDF</span>
+                                <span class="text-[9px] font-serif font-bold text-center my-auto">AGENDA<br>DIGITAL</span>
+                                <div class="text-[5px] text-stone-300 mt-auto">Mercado Libre Ready</div>
+                            </div>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                            <div class="space-y-2">
+                                <span class="text-[10px] font-bold tracking-widest text-amber-700 uppercase bg-amber-100/60 px-2.5 py-1 rounded-full inline-block" data-key="port3-tag">Diseño de Recursos</span>
+                                <h3 class="font-serif text-lg font-bold text-voxblue leading-tight" data-key="port3-title">Recursos Imprimibles e Interactivos</h3>
+                                <p class="text-xs text-stone-600 leading-relaxed" data-key="port3-desc">
+                                    Maquetación, paginación y estructura de agendas digitales y hojas imprimibles de alto impacto estético. Diseñado mediante InDesign, Canva y Acrobat para la comercialización directa en plataformas online.
+                                </p>
+                            </div>
+                            <div class="pt-4 border-t border-stone-100 flex items-center justify-between text-xs text-stone-500">
+                                <span data-key="port-format-3">Formato: PDF Interactivo</span>
+                                <span class="font-bold text-voxblue">Acrobat & Canva</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ==================== PESTAÑA: PRESUPUESTADOR (INTERACTIVO) ==================== -->
+            <section id="tab-calculadora" class="tab-content space-y-12 hidden">
+                <div class="text-center max-w-2xl mx-auto space-y-3">
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-voxblue" data-key="calc-title">Simulador de Proyecto</h2>
+                    <p class="text-stone-500 text-sm" data-key="calc-subtitle">Calculá tiempos y recursos tentativos basados en el volumen de tu manuscrito y las necesidades de tu texto.</p>
+                </div>
+
+                <div class="bg-white p-6 sm:p-10 rounded-3xl shadow-md border border-stone-100 max-w-3xl mx-auto grid md:grid-cols-5 gap-8">
+                    <!-- Configuración -->
+                    <div class="md:col-span-3 space-y-6">
+                        <!-- Deslizador de palabras -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs font-bold text-stone-500 uppercase tracking-wider" data-key="calc-words">Extensión de Manuscrito</label>
+                                <span class="bg-voxblue/10 text-voxblue font-bold px-3 py-1 rounded-md text-sm"><span id="word-counter">20,000</span> <span data-key="calc-w-unit">palabras</span></span>
+                            </div>
+                            <input type="range" id="word-slider" min="1000" max="150000" step="1000" value="20000" oninput="updateCalculation()" class="w-full accent-voxblue h-2 bg-stone-100 rounded-lg appearance-none cursor-pointer">
+                            <div class="flex justify-between text-[10px] text-stone-400">
+                                <span data-key="calc-min">1,000 (Artículo / Relato)</span>
+                                <span data-key="calc-max">150,000 (Novela de Fantasía)</span>
+                            </div>
+                        </div>
+
+                        <!-- Checkboxes de servicios -->
+                        <div class="space-y-3">
+                            <label class="text-xs font-bold text-stone-500 uppercase tracking-wider block" data-key="calc-services-req">Servicios requeridos</label>
+                            
+                            <label class="flex items-start gap-3 p-3 rounded-xl border border-stone-100 hover:bg-stone-50 cursor-pointer transition">
+                                <input type="checkbox" id="calc-style" checked onchange="updateCalculation()" class="mt-1 accent-voxblue">
+                                <div>
+                                    <span class="font-semibold text-sm text-voxblue block" data-key="calc-style-lbl">Corrección de Estilo & Ortotipografía</span>
+                                    <span class="text-[11px] text-stone-500 leading-none block" data-key="calc-style-sub">Optimiza la legibilidad, fluidez y ortografía técnica</span>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start gap-3 p-3 rounded-xl border border-stone-100 hover:bg-stone-50 cursor-pointer transition">
+                                <input type="checkbox" id="calc-layout" onchange="updateCalculation()" class="mt-1 accent-voxblue">
+                                <div>
+                                    <span class="font-semibold text-sm text-voxblue block" data-key="calc-layout-lbl">Maquetación Digital & Impresa</span>
+                                    <span class="text-[11px] text-stone-500 leading-none block" data-key="calc-layout-sub">Diseño interior, EPUB fluido, metadatos listos</span>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start gap-3 p-3 rounded-xl border border-stone-100 hover:bg-stone-50 cursor-pointer transition">
+                                <input type="checkbox" id="calc-translation" onchange="updateCalculation()" class="mt-1 accent-voxblue">
+                                <div>
+                                    <span class="font-semibold text-sm text-voxblue block" data-key="calc-translation-lbl">Traducción Profesional (EN/ES)</span>
+                                    <span class="text-[11px] text-stone-500 leading-none block" data-key="calc-translation-sub">Traducción fiel de sentido, adaptada culturalmente</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Resultados dinámicos -->
+                    <div class="md:col-span-2 bg-voxblue/5 rounded-2xl p-6 flex flex-col justify-between border border-voxblue/10 space-y-6">
+                        <div class="space-y-4">
+                            <h4 class="font-serif text-lg font-bold text-voxblue" data-key="calc-res-title">Estimación Tentativa</h4>
+                            
+                            <div class="space-y-1">
+                                <span class="text-xs text-stone-500 block" data-key="calc-time-est">Tiempo de Entrega Aproximado:</span>
+                                <span class="text-2xl font-bold text-voxblue" id="estimated-time">2 semanas</span>
+                            </div>
+
+                            <hr class="border-voxblue/10">
+
+                            <div class="space-y-2">
+                                <span class="text-xs text-stone-500 block" data-key="calc-recommend">Recomendación Editorial:</span>
+                                <p class="text-xs text-stone-600 leading-relaxed" id="recommendation-text">
+                                    Para un texto de esta longitud, se recomienda una corrección de estilo para consolidar el ritmo y asegurar la coherencia estilística.
+                                </p>
+                            </div>
+                        </div>
+
+                        <button onclick="prefillContact()" class="w-full bg-voxblue hover:bg-voxblue-dark text-white p-3.5 rounded-xl font-bold tracking-wider text-xs transition-all shadow cursor-pointer text-center" data-key="calc-action-btn">
+                            Quiero una Propuesta Formal
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== PESTAÑA: CONTACTO ==================== -->
+            <section id="tab-contacto" class="tab-content space-y-12 hidden">
+                <div class="text-center max-w-2xl mx-auto space-y-3">
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-voxblue" data-key="contact-title">Iniciá el Camino de tu Manuscrito</h2>
+                    <p class="text-stone-500 text-sm" data-key="contact-subtitle">Contanos sobre tu obra. Te responderemos con un análisis inicial y un presupuesto a la medida de tu proyecto.</p>
+                </div>
+
+                <div class="max-w-xl mx-auto bg-white p-8 sm:p-10 rounded-3xl shadow-md border border-stone-100 relative">
+                    <!-- Formulario de Contacto -->
+                    <form id="contact-form" class="space-y-5" onsubmit="handleFormSubmit(event)">
+                        <div>
+                            <label class="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-1.5" data-key="form-name">Nombre o Nombre de la Editorial / Empresa</label>
+                            <input type="text" id="form-input-name" required class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:outline-none focus:border-voxblue bg-stone-50 focus:ring-1 focus:ring-voxblue">
+                        </div>
+                        
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-1.5" data-key="form-email">Correo de Contacto</label>
+                                <input type="email" id="form-input-email" required class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:outline-none focus:border-voxblue bg-stone-50 focus:ring-1 focus:ring-voxblue">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-1.5" data-key="form-service">Servicio Principal</label>
+                                <select id="form-input-service" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:outline-none focus:border-voxblue bg-stone-50 focus:ring-1 focus:ring-voxblue text-stone-600">
+                                    <option value="style" data-key="opt-style">Corrección de Estilo & Ortotipografía</option>
+                                    <option value="layout" data-key="opt-layout">Maquetación Digital & Papel</option>
+                                    <option value="translation" data-key="opt-translation">Traducción Español / Inglés</option>
+                                    <option value="coaching" data-key="opt-coaching">Acompañamiento Integral</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-1.5" data-key="form-words">Extensión aproximada</label>
+                                <input type="number" id="form-input-words" placeholder="Ej: 45000" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:outline-none focus:border-voxblue bg-stone-50 focus:ring-1 focus:ring-voxblue">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-1.5" data-key="form-language">Idioma del Original</label>
+                                <select id="form-input-lang" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:outline-none focus:border-voxblue bg-stone-50 focus:ring-1 focus:ring-voxblue text-stone-600">
+                                    <option value="es" data-key="opt-es">Español</option>
+                                    <option value="en" data-key="opt-en">Inglés (English)</option>
+                                    <option value="other" data-key="opt-other">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-1.5" data-key="form-desc">Contanos de tu proyecto</label>
+                            <textarea id="form-input-desc" rows="4" placeholder="¿De qué trata? ¿A quién va dirigido? ¿Tenés fechas límites de entrega?" class="w-full p-3 border border-stone-200 rounded-xl text-sm focus:outline-none focus:border-voxblue bg-stone-50 focus:ring-1 focus:ring-voxblue"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-voxblue hover:bg-voxblue-dark text-white p-4 rounded-xl font-bold text-xs tracking-widest uppercase transition-all shadow-md hover:shadow-lg cursor-pointer" data-key="form-submit">
+                            Enviar Propuesta de Proyecto
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-voxblue text-stone-300 text-xs py-8 border-t border-white/10 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+            <div class="space-y-1">
+                <span class="font-serif text-lg font-bold text-white tracking-wide block">VOX LIBRI</span>
+                <p>&copy; 2026 VOX LIBRI. <span id="footer-rights">Todos los derechos reservados.</span></p>
+            </div>
+            <div class="text-stone-400 space-y-1">
+                <p id="footer-slogan">Elegancia, Rigor Técnico e Integridad Lingüística.</p>
+                <p>InDesign · EPUB 3 · Metadata · Español & English</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL DE ÉXITO (Reemplaza alert) -->
+    <div id="success-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4 hidden">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-stone-100 text-center space-y-6">
+            <div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto text-3xl">✓</div>
+            <div class="space-y-2">
+                <h3 class="font-serif text-2xl font-bold text-voxblue" id="modal-title">¡Recibido con Éxito!</h3>
+                <p class="text-sm text-stone-600 leading-relaxed" id="modal-desc">Hemos tomado tus datos y comenzaremos a analizar los requerimientos de tu manuscrito. Te enviaremos nuestra propuesta técnica detallada al correo electrónico ingresado.</p>
+            </div>
+            <button onclick="closeModal()" class="w-full bg-voxblue hover:bg-voxblue-dark text-white p-3 rounded-xl font-bold text-xs tracking-wider cursor-pointer" id="modal-btn">Cerrar</button>
+        </div>
+    </div>
+
+
+    <!-- DICCIONARIO DE TRADUCCIÓN -->
+    <script>
+        const translations = {
+            es: {
+                "top-bar-text": "Estudio Editorial Multilingüe · Español & English",
+                "nav-subtitle": "Servicios Editoriales",
+                "nav-home": "Inicio",
+                "nav-services": "Servicios",
+                "nav-portfolio": "Portafolio",
+                "nav-calc": "Presupuestador",
+                "nav-contact": "Contacto",
+                
+                "hero-tag": "Estudio Editorial de Alto Nivel",
+                "hero-title": "Cuidamos tus textos.<br>Potenciamos tu voz.",
+                "hero-desc": "Somos un estudio boutique dedicado a la edición, corrección, traducción, maquetación y acompañamiento personalizado de textos tanto en español como en inglés.",
+                "btn-hero-contact": "Cotizar Mi Manuscrito",
+                "btn-hero-more": "Conocer Servicios",
+                
+                "val1-title": "Artesanía de la Palabra",
+                "val1-desc": "No usamos correctores automáticos despersonalizados. Analizamos tu estilo, el ritmo literario y la cadencia de tu prosa para pulir el texto respetando tu identidad original.",
+                "val2-title": "Precisión Técnica Digital",
+                "val2-desc": "Somos especialistas en la ingeniería detrás del libro digital (EPUB accesibles, optimización para Bookwire) y maquetación fina para papel con rigor tipográfico estricto.",
+                "val3-title": "Esencia Bilingüe",
+                "val3-desc": "Traducimos y adaptamos textos entre español e inglés de forma nativa. No traducimos palabras; traducimos sentidos, giros culturales e intenciones artísticas o corporativas.",
+                
+                "banner-title": "¿Tenés un borrador o un proyecto en mente?",
+                "banner-desc": "No importa si es una novela de 80.000 palabras, un libro académico hipervínculado para indexar, o una agenda digital interactiva. En Vox Libri le damos la estructura y el brillo profesional necesario para que destaque en el mercado.",
+                "banner-btn": "Calcular Presupuesto Inicial",
+                
+                "services-title": "Nuestra Caja de Herramientas",
+                "services-subtitle": "Servicios modulares diseñados para acompañar el ciclo de vida de cualquier obra literaria, académica o corporativa.",
+                "srv1-title": "Corrección de Estilo & Ortotipografía",
+                "srv1-desc": "Revisión minuciosa de sintaxis, ortografía, puntuación, concordancia gramatical y coherencia textual. Eliminamos redundancias y vicios de lenguaje sin alterar tu voz ni tu estilo narrativo. Ideal para novelistas, investigadores y creadores de contenido técnico.",
+                "srv2-title": "Maquetación & Diseño Editorial",
+                "srv2-desc": "Creación de interiores armoniosos y legibles para tus libros físicos y digitales. Diseño de grillas tipográficas, control de huérfanas y viudas, e ingeniería de archivos digitales (EPUB) adaptados con metadatos finos para una distribución exitosa en plataformas como Amazon y Bookwire.",
+                "srv3-title": "Traducción Literaria & Técnica",
+                "srv3-desc": "Traducción experta bidireccional (Español ⇆ Inglés). Más allá del significado literal, adaptamos los matices idiomáticos, culturales e informales del texto original. Diseñado tanto para documentos académicos rigurosos como para proyectos artísticos sensibles.",
+                "srv4-title": "Acompañamiento y Consultoría",
+                "srv4-desc": "¿No sabés por dónde empezar a publicar tu libro? Te brindamos asesoramiento integral en el proceso técnico: desde el formato idóneo del borrador, hasta la correcta asignación de metadatos, estructuración de capítulos y optimización para impresión bajo demanda.",
+                
+                "portfolio-title": "Hitos del Estudio",
+                "portfolio-subtitle": "Un repaso por los proyectos en los que hemos participado, garantizando un estándar de calidad técnica insuperable.",
+                "port1-tag": "Corrección Editorial",
+                "port1-title": "Revista Caleidoscopio (Vol. 1, N.º 12)",
+                "port1-desc": "Llevamos adelante la corrección de estilo y la revisión ortotipográfica integral de este volumen para garantizar un lenguaje depurado, coordinando la corrección con las normas de publicación académica exigidas.",
+                "port-format": "Formato: Impreso & Digital",
+                "port2-tag": "Ingeniería del EPUB",
+                "port2-title": "Exportación y Metadatos Bookwire",
+                "port2-desc": "Configuración avanzada de parámetros técnicos en Adobe InDesign para exportar archivos EPUB con máxima compatibilidad. Ajuste de metadatos de accesibilidad y superación de validaciones críticas en la pasarela de Bookwire.",
+                "port-format-2": "Formato: Reflowable EPUB 3",
+                "port3-tag": "Diseño de Recursos",
+                "port3-title": "Recursos Imprimibles e Interactivos",
+                "port3-desc": "Maquetación, paginación y estructura de agendas digitales y hojas imprimibles de alto impacto estético. Diseñado mediante InDesign, Canva y Acrobat para la comercialización directa en plataformas online.",
+                "port-format-3": "Formato: PDF Interactivo",
+                
+                "calc-title": "Simulador de Proyecto",
+                "calc-subtitle": "Calculá tiempos y recursos tentativos basados en el volumen de tu manuscrito y las necesidades de tu texto.",
+                "calc-words": "Extensión de Manuscrito",
+                "calc-w-unit": "palabras",
+                "calc-min": "1,000 (Artículo / Relato)",
+                "calc-max": "150,000 (Novela de Fantasía)",
+                "calc-services-req": "Servicios requeridos",
+                "calc-style-lbl": "Corrección de Estilo & Ortotipografía",
+                "calc-style-sub": "Optimiza la legibilidad, fluidez y ortografía técnica",
+                "calc-layout-lbl": "Maquetación Digital & Impresa",
+                "calc-layout-sub": "Diseño interior, EPUB fluido, metadatos listos",
+                "calc-translation-lbl": "Traducción Profesional (EN/ES)",
+                "calc-translation-sub": "Traducción fiel de sentido, adaptada culturalmente",
+                "calc-res-title": "Estimación Tentativa",
+                "calc-time-est": "Tiempo de Entrega Aproximado:",
+                "calc-recommend": "Recomendación Editorial:",
+                "calc-action-btn": "Quiero una Propuesta Formal",
+                
+                "contact-title": "Iniciá el Camino de tu Manuscrito",
+                "contact-subtitle": "Contanos sobre tu obra. Te responderemos con un análisis inicial y un presupuesto a la medida de tu proyecto.",
+                "form-name": "Nombre o Nombre de la Editorial / Empresa",
+                "form-email": "Correo de Contacto",
+                "form-service": "Servicio Principal",
+                "form-words": "Extensión aproximada",
+                "form-language": "Idioma del Original",
+                "form-desc": "Contanos de tu proyecto",
+                "form-submit": "Enviar Propuesta de Proyecto",
+                "opt-style": "Corrección de Estilo & Ortotipografía",
+                "opt-layout": "Maquetación Digital & Papel",
+                "opt-translation": "Traducción Español / Inglés",
+                "opt-coaching": "Acompañamiento Integral",
+                "opt-es": "Español",
+                "opt-en": "Inglés (English)",
+                "opt-other": "Otro",
+                
+                "footer-rights": "Todos los derechos reservados.",
+                "footer-slogan": "Elegancia, Rigor Técnico e Integridad Lingüística.",
+                "modal-title": "¡Recibido con Éxito!",
+                "modal-desc": "Hemos tomado tus datos y comenzaremos a analizar los requerimientos de tu manuscrito. Te enviaremos nuestra propuesta técnica detallada al correo electrónico ingresado.",
+                "modal-btn": "Cerrar"
+            },
+            en: {
+                "top-bar-text": "Multilingual Editorial Studio · Español & English",
+                "nav-subtitle": "Editorial Services",
+                "nav-home": "Home",
+                "nav-services": "Services",
+                "nav-portfolio": "Portfolio",
+                "nav-calc": "Budget Simulator",
+                "nav-contact": "Contact",
+                
+                "hero-tag": "High-End Editorial Studio",
+                "hero-title": "We refine your words.<br>We amplify your voice.",
+                "hero-desc": "We are a boutique studio dedicated to editing, proofreading, translation, typesetting, and personalized coaching of texts in both Spanish and English.",
+                "btn-hero-contact": "Get a Quote for My Manuscript",
+                "btn-hero-more": "Explore Services",
+                
+                "val1-title": "Craftsmanship of the Word",
+                "val1-desc": "We do not use generic automatic correctors. We analyze your style, literary rhythm, and prose cadence to polish the text while respecting your unique voice.",
+                "val2-title": "Technical Digital Precision",
+                "val2-desc": "We specialize in the engineering behind digital books (accessible EPUB, metadata optimization for Bookwire) and elegant typesetting for print with strict typographical rigor.",
+                "val3-title": "Bilingual Essence",
+                "val3-desc": "We translate and adapt texts between Spanish and English natively. We do not translate words; we translate meaning, cultural idioms, and artistic or corporate intent.",
+                
+                "banner-title": "Have a draft or project in mind?",
+                "banner-desc": "It doesn't matter if it is an 80,000-word novel, a highly referenced academic book ready for indexing, or an interactive digital planner. At Vox Libri we provide the structure and professional sheen needed to stand out in the market.",
+                "banner-btn": "Calculate Initial Budget",
+                
+                "services-title": "Our Toolbox",
+                "services-subtitle": "Modular services designed to accompany the lifecycle of any literary, academic, or corporate work.",
+                "srv1-title": "Stylistic & Ortotypographical Proofreading",
+                "srv1-desc": "Thorough review of syntax, spelling, punctuation, grammatical concordance, and textual coherence. We eliminate redundancies and language bad habits without altering your narrative voice or style. Ideal for novelists, researchers, and technical content creators.",
+                "srv2-title": "Book Layout & Editorial Design",
+                "srv2-desc": "Creation of harmonious, readable interiors for both physical and digital books. Typographic grid design, orphan and widow control, and digital file engineering (EPUB) fully equipped with accessibility metadata for distribution on platforms like Amazon and Bookwire.",
+                "srv3-title": "Literary & Technical Translation",
+                "srv3-desc": "Expert bidirectional translation (Spanish ⇆ English). Beyond literal meaning, we adapt the idiomatic, cultural, and colloquial nuances of the original text. Crafted for both rigorous academic papers and sensitive artistic projects.",
+                "srv4-title": "Coaching & Consulting",
+                "srv4-desc": "Not sure how or where to start publishing your book? We offer complete guidance through the technical process: from draft preparation to assigning proper metadata, structure, and print-on-demand optimization.",
+                
+                "portfolio-title": "Studio Milestones",
+                "portfolio-subtitle": "A review of some projects we have proudly participated in, ensuring a peerless standard of technical excellence.",
+                "port1-tag": "Editorial Proofreading",
+                "port1-title": "Caleidoscopio Journal (Vol. 1, No. 12)",
+                "port1-desc": "We performed style correction and comprehensive ortotypographical proofreading of this volume to guarantee polished prose, coordinating the revisions with the required academic publishing standards.",
+                "port-format": "Format: Print & Digital",
+                "port2-tag": "EPUB Engineering",
+                "port2-title": "Bookwire Metadata & Export",
+                "port2-desc": "Advanced configuration of technical parameters in Adobe InDesign to export highly compatible EPUB files. Setting up accessibility metadata and clearing critical validation gates on the Bookwire platform.",
+                "port-format-2": "Format: Reflowable EPUB 3",
+                "port3-tag": "Resource Design",
+                "port3-title": "Printable & Interactive Resources",
+                "port3-desc": "Typesetting, pagination, and structuring of digital planners and high-quality printable inserts. Crafted via InDesign, Canva, and Acrobat for direct e-commerce distribution.",
+                "port-format-3": "Format: Interactive PDF",
+                
+                "calc-title": "Project Simulator",
+                "calc-subtitle": "Calculate tentative timeframes and services based on your manuscript's volume and text goals.",
+                "calc-words": "Manuscript Word Count",
+                "calc-w-unit": "words",
+                "calc-min": "1,000 (Article / Story)",
+                "calc-max": "150,000 (Fantasy Novel)",
+                "calc-services-req": "Required services",
+                "calc-style-lbl": "Style Proofreading & Ortotypography",
+                "calc-style-sub": "Optimizes readability, flow, and technical spelling",
+                "calc-layout-lbl": "Digital & Print Book Layout",
+                "calc-layout-sub": "Interior layout, smooth EPUB export, metadata ready",
+                "calc-translation-lbl": "Professional Translation (EN/ES)",
+                "calc-translation-sub": "Faithful translation of meaning, adapted culturally",
+                "calc-res-title": "Tentative Estimate",
+                "calc-time-est": "Approximate Delivery Time:",
+                "calc-recommend": "Editorial Recommendation:",
+                "calc-action-btn": "I Want a Formal Proposal",
+                
+                "contact-title": "Begin Your Manuscript's Journey",
+                "contact-subtitle": "Tell us about your work. We will reach out with an initial analysis and a custom budget aligned with your project.",
+                "form-name": "Name or Publishing House / Company Name",
+                "form-email": "Contact Email",
+                "form-service": "Primary Service Requested",
+                "form-words": "Approximate word count",
+                "form-language": "Original Language",
+                "form-desc": "Tell us about your project",
+                "form-submit": "Send Project Inquiry",
+                "opt-style": "Stylistic & Ortotypographical Proofreading",
+                "opt-layout": "Digital & Print Book Layout",
+                "opt-translation": "Translation Spanish / English",
+                "opt-coaching": "Coaching & Consulting",
+                "opt-es": "Spanish",
+                "opt-en": "English",
+                "opt-other": "Other",
+                
+                "footer-rights": "All rights reserved.",
+                "footer-slogan": "Elegance, Technical Rigor, and Linguistic Integrity.",
+                "modal-title": "Received Successfully!",
+                "modal-desc": "We have received your details and will begin analyzing your manuscript's requirements. We will send our comprehensive technical proposal to your email address.",
+                "modal-btn": "Close"
+            }
+        };
+
+        let currentLang = 'es';
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            
+            // Alternar estilos activos de botones de idioma
+            const btnEs = document.getElementById('lang-es');
+            const btnEn = document.getElementById('lang-en');
+            if (lang === 'es') {
+                btnEs.classList.add('font-bold', 'text-voxblue');
+                btnEs.classList.remove('font-normal', 'text-stone-500');
+                btnEn.classList.remove('font-bold', 'text-voxblue');
+                btnEn.classList.add('font-normal', 'text-stone-500');
+            } else {
+                btnEn.classList.add('font-bold', 'text-voxblue');
+                btnEn.classList.remove('font-normal', 'text-stone-500');
+                btnEs.classList.remove('font-bold', 'text-voxblue');
+                btnEs.classList.add('font-normal', 'text-stone-500');
+            }
+
+            // Traducir todos los elementos con data-key o ids especiales
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            // Traducir IDs directos
+            const directIds = [
+                "top-bar-text", "nav-subtitle", "hero-tag", "hero-title", "hero-desc", 
+                "estimated-time", "footer-rights", "footer-slogan",
+                "modal-title", "modal-desc", "modal-btn"
+            ];
+            directIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && translations[lang][id]) {
+                    el.innerHTML = translations[lang][id];
+                }
+            });
+
+            // Actualizar simulador
+            updateCalculation();
+        }
+    </script>
+
+    <!-- CONTROL DE SPA & LÓGICA DE ESTIMACIONES -->
+    <script>
+        function switchTab(tabId) {
+            // Ocultar todos los contenidos de las pestañas aplicando transición rápida
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+                tab.style.opacity = '0';
+                tab.style.transform = 'translateY(8px)';
+            });
+
+            // Quitar estilos activos de todos los botones
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-white/10', 'text-white');
+                btn.classList.add('text-stone-200', 'hover:text-white', 'hover:bg-white/5');
+            });
+
+            // Mostrar y transicionar la pestaña seleccionada
+            const activeTab = document.getElementById('tab-' + tabId);
+            activeTab.classList.remove('hidden');
+            setTimeout(() => {
+                activeTab.style.opacity = '1';
+                activeTab.style.transform = 'translateY(0)';
+            }, 50);
+
+            // Hacer activo el botón de navegación correspondiente
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-stone-200', 'hover:text-white', 'hover:bg-white/5');
+                activeBtn.classList.add('bg-white/10', 'text-white');
+            }
+
+            // Scroll suave hacia arriba
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Lógica de cálculo interactivo de presupuesto estimado
+        function updateCalculation() {
+            const wordCount = parseInt(document.getElementById('word-slider').value);
+            
+            // Actualizar display numérico formateado
+            document.getElementById('word-counter').innerText = wordCount.toLocaleString();
+
+            const styleChecked = document.getElementById('calc-style').checked;
+            const layoutChecked = document.getElementById('calc-layout').checked;
+            const translationChecked = document.getElementById('calc-translation').checked;
+
+            // Cálculo de tiempo sugerido estimado
+            let baseWeeks = 0.5; // Relato o artículo corto base
+            
+            // Suma basada en la longitud
+            if (wordCount > 5000) {
+                baseWeeks += (wordCount / 12000); // Promedio de 12k palabras por semana por servicio
+            }
+
+            // Factor multiplicador por servicio
+            let servicesMultiplier = 0;
+            if (styleChecked) servicesMultiplier += 0.8;
+            if (layoutChecked) servicesMultiplier += 0.9;
+            if (translationChecked) servicesMultiplier += 1.3;
+
+            if (servicesMultiplier === 0) {
+                servicesMultiplier = 0.2; // Sin servicios seleccionados
+            }
+
+            let finalWeeks = Math.ceil(baseWeeks * servicesMultiplier);
+            if (finalWeeks < 1) finalWeeks = 1;
+
+            // Formatear texto de salida de tiempo según idioma
+            const timeOutput = document.getElementById('estimated-time');
+            if (currentLang === 'es') {
+                timeOutput.innerText = finalWeeks === 1 ? '1 semana' : `${finalWeeks} semanas`;
+            } else {
+                timeOutput.innerText = finalWeeks === 1 ? '1 week' : `${finalWeeks} weeks`;
+            }
+
+            // Recomendación dinámica basada en combinaciones
+            const recommendation = document.getElementById('recommendation-text');
+            if (currentLang === 'es') {
+                if (!styleChecked && !layoutChecked && !translationChecked) {
+                    recommendation.innerText = "Seleccioná al menos un servicio para brindarte una recomendación acorde.";
+                } else if (wordCount > 40000 && styleChecked && layoutChecked) {
+                    recommendation.innerText = "¡Excelente combinación! Para manuscritos largos, coordinar la corrección estilística junto con la maquetación simultánea optimiza tiempos técnicos y previene desajustes de paginado.";
+                } else if (translationChecked && styleChecked) {
+                    recommendation.innerText = "La traducción requiere corrección de estilo cruzada en español e inglés para que no se pierdan giros poéticos ni de sentido literario. Planificaremos dos rondas de revisión.";
+                } else if (layoutChecked) {
+                    recommendation.innerText = "Para maquetación (impresión o EPUB 3 digital), te ayudaremos a configurar los metadatos de accesibilidad exigidos internacionalmente para una correcta indexación.";
+                } else {
+                    recommendation.innerText = "Te recomendamos complementar con maquetación final para obtener un archivo PDF/EPUB exportable directamente a tus canales de venta digital o físicas.";
+                }
+            } else {
+                if (!styleChecked && !layoutChecked && !translationChecked) {
+                    recommendation.innerText = "Select at least one service to receive a tailored recommendation.";
+                } else if (wordCount > 40000 && styleChecked && layoutChecked) {
+                    recommendation.innerText = "Excellent pairing! For long drafts, coordinating style correction alongside layout design optimizes turnaround times and prevents pagination mismatches.";
+                } else if (translationChecked && styleChecked) {
+                    recommendation.innerText = "Translation projects require style matching in Spanish and English to prevent idiom loss. We will plan double-layered revision cycles.";
+                } else if (layoutChecked) {
+                    recommendation.innerText = "For layout and design (POD print or EPUB 3), we will integrate all accessibility metadata required by modern distributors like Amazon and Bookwire.";
+                } else {
+                    recommendation.innerText = "We suggest pairing your correction with a professional layout to receive a ready-to-publish digital EPUB file.";
+                }
+            }
+        }
+
+        // Pasar datos del presupuestador directo al formulario de contacto
+        function prefillContact() {
+            const wordCount = document.getElementById('word-slider').value;
+            const styleChecked = document.getElementById('calc-style').checked;
+            const layoutChecked = document.getElementById('calc-layout').checked;
+            const translationChecked = document.getElementById('calc-translation').checked;
+
+            // Rellenar campos del formulario
+            document.getElementById('form-input-words').value = wordCount;
+
+            const serviceSelect = document.getElementById('form-input-service');
+            if (translationChecked) {
+                serviceSelect.value = "translation";
+            } else if (layoutChecked) {
+                serviceSelect.value = "layout";
+            } else if (styleChecked) {
+                serviceSelect.value = "style";
+            }
+
+            // Cambiar a pestaña contacto
+            switchTab('contacto');
+        }
+
+        // Envío controlado de formulario sin alert nativos
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            // Simulación estética de guardado/envío
+            const name = document.getElementById('form-input-name').value;
+            const service = document.getElementById('form-input-service').value;
+            
+            // Personalizar textos de éxito según idioma
+            const modalTitle = document.getElementById('modal-title');
+            const modalDesc = document.getElementById('modal-desc');
+
+            if (currentLang === 'es') {
+                modalTitle.innerText = `¡Gracias, ${name}!`;
+                modalDesc.innerText = `Hemos recibido tu solicitud de cotización para tu proyecto editorial. Analizaremos tu manuscrito y te enviaremos una propuesta formal en menos de 48 horas laborales.`;
+            } else {
+                modalTitle.innerText = `Thank you, ${name}!`;
+                modalDesc.innerText = `We have successfully received your inquiry. We will review your project requirements and reach out with a comprehensive proposal in less than 48 business hours.`;
+            }
+
+            // Mostrar Modal
+            document.getElementById('success-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('success-modal').classList.add('hidden');
+            // Limpiar formulario tras el éxito
+            document.getElementById('contact-form').reset();
+            // Regresar a Home tras el envío
+            switchTab('home');
+        }
+
+        // Inicializar cálculos con la carga
+        window.onload = function() {
+            updateCalculation();
+        }
+    </script>
+</body>
+</html>
+
+
+---
+
+### 🌟 Resumen de lo que he programado para vos:
+
+* **Estructura Dinámica SPA:** Los botones de navegación superior (*Inicio*, *Servicios*, *Portafolio*, *Presupuestador*, *Contacto*) cambian el contenido al instante con transiciones visuales, sin recargar el navegador.
+* **Estilo "VOX LIBRI" Auténtico:** Recreé un logo estilizado del gato con garras sobre un libro abierto utilizando vectores SVG para que se asimile de manera elegante a la imagen que me compartiste.
+* **Portafolio B2B Adaptado:** Resalté tus proyectos reales, como la maquetación de metadatos en InDesign para Bookwire, la Revista Caleidoscopio y tus diseños PDF para la venta.
+* **Simulador de Presupuesto:** Una herramienta interactiva donde los autores pueden mover la cantidad de palabras de sus libros y marcar qué servicios necesitan para conocer un tiempo aproximado de finalización del trabajo.
+* **Alternador de Idioma (ES/EN):** Dado que tu estudio hace traducción y acompañamiento en ambos idiomas, incluí un selector en la cabecera que traduce toda la interfaz en tiempo real.
